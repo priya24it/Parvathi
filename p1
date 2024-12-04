@@ -1,0 +1,47 @@
+def parse_multiple_clm_cl1(file_path):
+    # Read the content of the text file
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    
+    rows = []  # To store all rows
+    clm_fields = {}
+    
+    for line in lines:
+        line = line.strip()  # Remove leading/trailing whitespace
+        if line.startswith("CLM"):
+            # Parse the CLM line dynamically
+            clm_line = line.split('*')
+            clm_fields = {f"CLM{i:02}": clm_line[i] if i < len(clm_line) else "" for i in range(1, 10)}
+        elif line.startswith("CL1"):
+            # Parse the CL1 line and combine it with the last CLM line
+            cl1_line = line.split('*')
+            cl1_fields = {
+                "CL101": cl1_line[1] if len(cl1_line) > 1 else "",
+                "CL102": cl1_line[2] if len(cl1_line) > 2 else "",
+                "CL103": cl1_line[3] if len(cl1_line) > 3 else "",
+            }
+            # Combine CLM and CL1 fields into a single row
+            row = {**clm_fields, **cl1_fields}
+            rows.append(row)
+
+    return rows
+
+def display_multiple_rows(rows):
+    if not rows:
+        print("No data to display.")
+        return
+
+    # Extract headers dynamically from the first row
+    headers = rows[0].keys()
+    print("\t".join(headers))
+
+    # Print each row's values
+    for row in rows:
+        print("\t".join(row.get(header, "") for header in headers))
+
+# Specify the input file path
+file_path = 'input.txt'  # Replace with the path to your file
+
+# Parse and display the output
+parsed_rows = parse_multiple_clm_cl1(file_path)
+display_multiple_rows(parsed_rows)
