@@ -1,0 +1,16 @@
+df3 = pd.DataFrame(data)
+
+# Dynamically identify column pairs to compare
+columns = df3.columns.tolist()
+comparison_pairs = [(col, col.replace('_x', '_y')) for col in columns if col.endswith('_x') and col.replace('_x', '_y') in columns]
+
+# Perform comparisons dynamically
+for col1, col2 in comparison_pairs:
+    comparison_col = f"{col1}_==_{col2}"  # Name the new column dynamically
+    df3[comparison_col] = df3[col1] == df3[col2]  # Compare the columns
+
+# Display the updated DataFrame
+print(df3)
+
+# Save to a file
+df3.to_csv('dynamic_comparison_results.csv', index=False)
