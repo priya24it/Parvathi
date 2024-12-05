@@ -1,0 +1,135 @@
+Here is a detailed set of test cases for verifying the addition of new columns in a Dataflow streaming job, including table backup and restoration processes:
+
+Test Cases for Dataflow Job Redeployment with New Columns
+
+1. Pre-Redeployment Backup Test Cases
+
+	1.	Verify Table Backup Creation
+	•	Objective: Ensure the existing table is successfully backed up before redeployment.
+	•	Steps:
+	1.	Identify the source table.
+	2.	Create a backup of the table (e.g., source_table_backup).
+	3.	Validate the backup creation.
+	•	Expected Results:
+	•	A backup table is created with identical schema and data.
+	•	Row counts in both tables match.
+SQL Example:
+
+SELECT COUNT(*) FROM `project.dataset.source_table`;
+SELECT COUNT(*) FROM `project.dataset.source_table_backup`;
+
+
+	2.	Verify Data Integrity in Backup Table
+	•	Objective: Ensure the data in the backup table is consistent with the source table.
+	•	Steps:
+	1.	Query a subset of rows from the source and backup tables.
+	2.	Compare data for consistency.
+	•	Expected Results:
+	•	Data in both tables is identical.
+	3.	Validate Backup Table Permissions
+	•	Objective: Ensure appropriate permissions are applied to the backup table.
+	•	Steps:
+	1.	Verify that the backup table has the same access permissions as the source table.
+	•	Expected Results:
+	•	Permissions are identical to the source table.
+
+2. New Columns Verification Test Cases
+
+	1.	Verify Schema Changes Post-Redeployment
+	•	Objective: Confirm that the new columns are added to the table after the job is redeployed.
+	•	Steps:
+	1.	Inspect the table schema before and after deployment.
+	2.	Verify the presence of new columns with correct data types.
+	•	Expected Results:
+	•	New columns appear in the table schema.
+	•	Data types of new columns match the expected schema.
+SQL Example:
+
+SELECT column_name, data_type
+FROM `project.dataset.INFORMATION_SCHEMA.COLUMNS`
+WHERE table_name = 'target_table';
+
+
+	2.	Verify Default Values for New Columns
+	•	Objective: Ensure new columns have default or null values for existing rows.
+	•	Steps:
+	1.	Query the new columns for existing rows.
+	•	Expected Results:
+	•	New columns contain default values (e.g., NULL or predefined constants).
+	3.	Verify New Columns in Streaming Data
+	•	Objective: Confirm that new data streams into the added columns after redeployment.
+	•	Steps:
+	1.	Allow the job to run for a few minutes post-redeployment.
+	2.	Query the table to check for non-null values in new columns.
+	•	Expected Results:
+	•	New columns contain expected data from the streaming job.
+SQL Example:
+
+SELECT new_column_1, new_column_2
+FROM `project.dataset.target_table`
+WHERE new_column_1 IS NOT NULL OR new_column_2 IS NOT NULL;
+
+3. Table Restore and Rollback Test Cases
+
+	1.	Restore from Backup Table
+	•	Objective: Validate the process of restoring data from the backup table.
+	•	Steps:
+	1.	Replace the current table data with the backup data (if necessary).
+	2.	Verify data consistency post-restore.
+	•	Expected Results:
+	•	The restored table matches the original backup.
+SQL Example:
+
+INSERT INTO `project.dataset.source_table`
+SELECT * FROM `project.dataset.source_table_backup`;
+
+
+	2.	Verify Schema Consistency After Restore
+	•	Objective: Ensure the restored table matches the original schema before redeployment.
+	•	Steps:
+	1.	Compare the schema of the restored table with the original.
+	•	Expected Results:
+	•	The restored table schema is identical to the original.
+	3.	Verify Data Integrity After Restore
+	•	Objective: Confirm that all data is restored correctly from the backup table.
+	•	Steps:
+	1.	Query data from the restored table.
+	2.	Compare row counts and values with the backup.
+	•	Expected Results:
+	•	Data integrity is maintained after restoration.
+
+4. End-to-End Functional Test Cases
+
+	1.	Verify Complete Dataflow Process
+	•	Objective: Ensure the entire data pipeline works seamlessly after redeployment with new columns.
+	•	Steps:
+	1.	Redeploy the Dataflow job.
+	2.	Verify that data is correctly streamed into the table, including the new columns.
+	•	Expected Results:
+	•	Dataflow job processes incoming data correctly.
+	•	New columns are populated as expected.
+	2.	Performance and Latency Check
+	•	Objective: Ensure no significant performance degradation after redeployment.
+	•	Steps:
+	1.	Measure job processing latency before and after redeployment.
+	2.	Monitor Dataflow job logs for warnings or errors.
+	•	Expected Results:
+	•	Job latency remains within acceptable limits.
+	•	No critical errors in logs.
+
+Test Case Summary
+
+Test Case	Objective	Expected Result
+Verify Table Backup Creation	Ensure backup is created successfully	Backup table matches the source table in data and schema
+Verify Data Integrity in Backup Table	Check data consistency in backup table	Backup table data matches source table
+Validate Backup Table Permissions	Confirm permissions for the backup table	Backup table has identical permissions to source table
+Verify Schema Changes Post-Redeployment	Confirm new columns are added	New columns appear in schema with correct data types
+Verify Default Values for New Columns	Ensure default values in new columns for existing rows	New columns contain default or null values
+Verify New Columns in Streaming Data	Check streaming data in new columns	New columns are populated with streaming data
+Restore from Backup Table	Validate restore process	Restored table matches backup table in data and schema
+Verify Schema Consistency After Restore	Confirm schema matches original post-restore	Restored schema is identical to original
+Verify Data Integrity After Restore	Check data correctness after restore	Restored table data matches backup table
+Verify Complete Dataflow Process	End-to-end validation of data pipeline	Dataflow job processes data correctly, including new columns
+Performance and Latency Check	Ensure no performance degradation after redeployment	Job latency remains consistent, with no critical errors in logs
+
+Let me know if you need further refinements or assistance!
