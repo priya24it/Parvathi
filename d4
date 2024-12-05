@@ -1,0 +1,78 @@
+import pandas as pd
+
+# Define a function to process the input file
+def process_input_file(input_file, output_file):
+    # Open the input file
+    with open(input_file, 'r') as file:
+        lines = file.readlines()
+
+    # Variables to store parsed data
+    data = []
+    record = {
+        'CLM01': None, 'CLM02': None, 'AMT01_D': None, 'AMT02_D': None,
+        'SBR_01': None, 'SBR_02': None, 'SBR_03': None,
+        'OI_01': None, 'OI_02': None, 'OI_03': None
+    }
+
+    # Iterate through lines to process combinations
+    for line in lines:
+        segments = line.strip().split('\t')
+
+        # Skip SBR lines at the start
+        if record['CLM01'] is None and segments[0].startswith("SBR"):
+            continue
+
+        # Identify CLM line
+        if segments[0].startswith("CLM"):
+            if record['CLM01'] is not None:  # Save the previous record
+                data.append(record)
+                record = {
+                    'CLM01': None, 'CLM02': None, 'AMT01_D': None, 'AMT02_D': None,
+                    'SBR_01': None, 'SBR_02': None, 'SBR_03': None,
+                    'OI_01': None, 'OI_02': None, 'OI_03': None
+                }
+
+            record['CLM01'] = segments[1]
+            record['CLM02'] = segments[2] if len(segments) > 2 else None
+
+        # Identify AMT line
+        elif segments[0].startswith("AMT"):
+            record['AMT01_D'] = segments[1] if len(segments) > 1 else None
+            record['AMT02_D'] = segments[2] if len(segments) > 2 else None
+
+        # Identify SBR line
+        elif segments[0].startswith("SBR"):
+            record['SBR_01'] = segments[1] if len(segments) > 1 else None
+            record['SBR_02'] = segments[2] if len(segments) > 2 else None
+            record['SBR_03'] = segments[3] if len(segments) > 3 else None
+
+        # Identify OI line
+        elif segments[0].startswith("OI"):
+            record['OI_01'] = segments[1] if len(segments) > 1 else None
+            record['OI_02'] = segments[2] if len(segments) > 2 else None
+            record['OI_03'] = segments[3] if len(segments) > 3 else None
+
+            # Combination ends here, save the record
+            data.append(record)
+            record = {
+                'CLM01': None, 'CLM02': None, 'AMT01_D': None, 'AMT02_D': None,
+                'SBR_01': None, 'SBR_02': None, 'SBR_03': None,
+                'OI_01': None, 'OI_02': None, 'OI_03': None
+            }
+
+    # Create a DataFrame from the processed data
+    df = pd.DataFrame(data)
+
+    # Save the DataFrame to a CSV file
+    df.to_csv(output_file, index=False)
+
+    # Return the DataFrame
+    return df
+
+# Process the file and save results
+input_file = 'output3.txt'
+output_file = 'output3.csv'
+df = process_input_file(input_file, output_file)
+
+# Display the DataFrame
+print(df)
