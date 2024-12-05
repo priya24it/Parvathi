@@ -1,0 +1,64 @@
+from googleapiclient.discovery import build
+from google.auth import default
+
+def get_job_pipeline_options(project_id, region, job_id):
+    # Automatically fetch credentials
+    credentials, _ = default()
+
+    # Build Dataflow API client
+    dataflow = build('dataflow', 'v1b3', credentials=credentials)
+
+    # Fetch job details
+    try:
+        request = dataflow.projects().locations().jobs().get(
+            projectId=project_id,
+            location=region,
+            jobId=job_id
+        )
+        response = request.execute()
+
+        # Debug: Print full job details
+        print(f"Job Details for Job ID {job_id}: {response}")
+
+        # Fetch pipeline options if available
+        pipeline_options = response.get('environment', {}).get('pipelineOptions', {})
+        if not pipeline_options:
+            print(f"Pipeline options not found for Job ID {job_id}.")
+        return pipeline_options
+    except Exception as e:
+        print(f"Error fetching job details for Job ID {job_id}: {str(e)}")
+        return {}
+
+def list_all_jobs(project_id, region):
+    # Automatically fetch credentials
+    credentials, _ = default()
+
+    # Build Dataflow API client
+    dataflow = build('dataflow', 'v1b3', credentials=credentials)
+
+    try:
+        # Fetch all jobs
+        request = dataflow.projects().locations().jobs().list(
+            projectId=project_id,
+            location=region,
+            view="JOB_VIEW_ALL"
+        )
+        response = request.execute()
+        jobs = response.get('jobs', [])
+        return jobs
+    except Exception as e:
+        print(f"Error fetching jobs: {str(e)}")
+        return []
+
+# Example usage
+project_id = 'your-project-id'
+region = 'your-region'
+
+jobs = list_all_jobs(project_id, region)
+
+for job in jobs:
+    job_id = job.get('id')
+    job_name = job.get('name')
+    print(f"Fetching pipeline options for Job ID: {job_id}, Name: {job_name}")
+    pipeline_options = get_job_pipeline_options(project_id, region, job_id)
+    print(f"Pipeline Options for Job ID {job_id}: {pipeline_options}")
