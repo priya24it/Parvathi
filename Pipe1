@@ -1,0 +1,54 @@
+from googleapiclient.discovery import build
+from google.auth import default
+
+def list_all_jobs(project_id, region):
+    # Automatically fetch application default credentials
+    credentials, _ = default()
+
+    # Build the Dataflow API client
+    dataflow = build('dataflow', 'v1b3', credentials=credentials)
+
+    # List all jobs in the specified project and region
+    request = dataflow.projects().locations().jobs().list(
+        projectId=project_id,
+        location=region,
+        view="JOB_VIEW_ALL"  # Fetch detailed job list
+    )
+    response = request.execute()
+    jobs = response.get('jobs', [])
+    return jobs
+
+def get_job_pipeline_options(project_id, region, job_id):
+    # Automatically fetch application default credentials
+    credentials, _ = default()
+
+    # Build the Dataflow API client
+    dataflow = build('dataflow', 'v1b3', credentials=credentials)
+
+    # Fetch job details
+    request = dataflow.projects().locations().jobs().get(
+        projectId=project_id,
+        location=region,
+        jobId=job_id
+    )
+    response = request.execute()
+
+    # Extract pipeline options from the job details
+    pipeline_options = response.get('environment', {}).get('pipelineOptions', {})
+    return pipeline_options
+
+# Example usage
+project_id = 'your-project-id'  # Replace with your Google Cloud Project ID
+region = 'your-region'  # e.g., 'us-central1'
+
+# Fetch all jobs
+jobs = list_all_jobs(project_id, region)
+
+# Iterate through all jobs to fetch pipeline options
+for job in jobs:
+    job_id = job.get('id')
+    job_name = job.get('name')
+    print(f"Fetching pipeline options for Job ID: {job_id}, Name: {job_name}")
+    
+    pipeline_options = get_job_pipeline_options(project_id, region, job_id)
+    print(f"Pipeline Options for Job ID {job_id}: {pipeline_options}")
