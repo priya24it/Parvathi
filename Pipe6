@@ -1,0 +1,82 @@
+import csv
+import json
+from googleapiclient.discovery import build
+from google.auth import default
+
+def get_job_pipeline_options(project_id, region, job_id):
+    # Automatically fetch credentials
+    credentials, _ = default()
+
+    # Build Dataflow API client
+    dataflow = build('dataflow', 'v1b3', credentials=credentials)
+
+    # Fetch job details
+    try:
+        request = dataflow.projects().locations().jobs().get(
+            projectId=project_id,
+            location=region,
+            jobId=job_id
+        )
+        response = request.execute()
+
+        # Fetch pipeline options if available
+        pipeline_options = response.get('environment', {}).get('pipelineOptions', {})
+        return pipeline_options
+    except Exception as e:
+        print(f"Error fetching job details for Job ID {job_id}: {str(e)}")
+        return {}
+
+def list_all_jobs(project_id, region):
+    # Automatically fetch credentials
+    credentials, _ = default()
+
+    # Build Dataflow API client
+    dataflow = build('dataflow', 'v1b3', credentials=credentials)
+
+    try:
+        # Fetch all jobs
+        request = dataflow.projects().locations().jobs().list(
+            projectId=project_id,
+            location=region,
+            view="JOB_VIEW_ALL"
+        )
+        response = request.execute()
+        jobs = response.get('jobs', [])
+        return jobs
+    except Exception as e:
+        print(f"Error fetching jobs: {str(e)}")
+        return []
+
+def export_jobs_to_csv(jobs, project_id, region, csv_file_path):
+    # Open CSV file for writing
+    with open(csv_file_path, mode="w", newline="") as csv_file:
+        writer = csv.writer(csv_file)
+        # Write header
+        writer.writerow(["Job ID", "Job Name", "Pipeline Options"])
+        
+        # Iterate through jobs and write their data
+        for job in jobs:
+            job_id = job.get('id')
+            job_name = job.get('name')
+            pipeline_options = get_job_pipeline_options(project_id, region, job_id)
+
+            # Convert pipeline_options dictionary to JSON string
+            pipeline_options_json = json.dumps(pipeline_options)
+
+            writer.writerow([
+                job_id,
+                job_name,
+                pipeline_options_json
+            ])
+    print(f"Data successfully exported to {csv_file_path}")
+
+# Example usage
+project_id = 'your-project-id'  # Replace with your Google Cloud Project ID
+region = 'your-region'  # e.g., 'us-central1'
+csv_file_path = '/mnt/data/dataflow_jobs.csv'  # Path to save CSV
+
+# Fetch all jobs
+jobs = list_all_jobs(project_id, region)
+
+# Export jobs and their pipeline options to CSV
+export_jobs_to_csv(jobs, project_id, region, csv_file_path)
