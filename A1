@@ -1,0 +1,63 @@
+Here is the same information without the table format:
+
+TC01: Validate duplicate records in staging models (a1, a2, a3).
+	•	Validation Criteria: Verify that there are no duplicate records in each of the staging tables by checking unique constraints or running a duplicate query.
+	•	Expected Outcome: No duplicate records exist in any of the staging models.
+
+TC02: Validate duplicate records across staging and landing tables.
+	•	Validation Criteria: Check that no duplicates are introduced when comparing staging tables (a1, a2, a3) with the landing tables.
+	•	Expected Outcome: Data in staging and landing tables remains distinct without duplicates.
+
+TC03: Validate data formatting in staging models (a1, a2, a3).
+	•	Validation Criteria: Ensure the data in the staging models follows the defined data format (e.g., date format, string length, numerical precision).
+	•	Expected Outcome: Data format in staging tables matches the expected format.
+
+TC04: Validate data formatting consistency with landing tables.
+	•	Validation Criteria: Verify that data in the staging tables matches the formatting rules and standards of the landing tables.
+	•	Expected Outcome: Data formatting is consistent between staging and landing tables.
+
+TC05: Validate data completeness in staging models.
+	•	Validation Criteria: Check for missing or null values in mandatory fields within the staging tables.
+	•	Expected Outcome: All mandatory fields in staging tables are populated.
+
+TC06: Validate data consistency between staging and landing tables.
+	•	Validation Criteria: Compare data in staging tables (a1, a2, a3) with the landing tables to ensure all records match in terms of values and data structure.
+	•	Expected Outcome: Data matches exactly between staging and landing tables.
+
+TC07: Validate field mappings between staging and landing tables.
+	•	Validation Criteria: Verify that each field in the staging tables is correctly mapped to the corresponding field in the landing tables.
+	•	Expected Outcome: All fields in the staging tables correctly align with the landing tables.
+
+TC08: Validate handling of duplicate records in staging (if expected duplicates).
+	•	Validation Criteria: If duplicates are expected in staging, ensure that they are handled according to defined business rules (e.g., removal or flagging).
+	•	Expected Outcome: Expected duplicates are correctly handled based on business rules.
+
+TC09: Validate data types in staging models.
+	•	Validation Criteria: Ensure that each field in the staging tables adheres to the expected data type as defined in the schema.
+	•	Expected Outcome: All fields in staging tables have the correct data type.
+
+TC10: Validate record counts between staging and landing.
+	•	Validation Criteria: Verify that the number of records in staging models matches the number of records in landing tables after data processing.
+	•	Expected Outcome: Record counts are consistent between staging and landing tables.
+
+TC11: Validate primary key uniqueness.
+	•	Validation Criteria: Check that all primary keys in the staging tables are unique and match the corresponding keys in the landing tables.
+	•	Expected Outcome: Primary keys are unique and align between staging and landing tables.
+
+TC12: Validate transformation logic from staging to landing.
+	•	Validation Criteria: Ensure that any transformation logic applied during the staging to landing process produces correct and expected results.
+	•	Expected Outcome: Transformation logic is accurately applied, and the resulting data is correct.
+
+TC13: Validate error handling and logging during staging.
+	•	Validation Criteria: Verify that any errors during the staging process are logged and handled appropriately.
+	•	Expected Outcome: Errors are correctly logged, and invalid data is excluded or flagged according to business rules.
+
+TC14: Validate referential integrity.
+	•	Validation Criteria: Check that all foreign keys in the staging tables have corresponding entries in the related landing table fields.
+	•	Expected Outcome: Referential integrity is maintained between staging and landing tables.
+
+TC15: Validate data freshness and timeliness.
+	•	Validation Criteria: Ensure that the data in staging tables is updated and matches the latest available data in the landing tables.
+	•	Expected Outcome: Staging tables contain the latest data, and updates are accurately reflected in landing tables.
+
+Let me know if this format works for you!
