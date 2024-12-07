@@ -1,0 +1,59 @@
+import pandas as pd
+
+# Read input data from output3.txt
+with open('output3.txt', 'r') as file:
+    lines = file.readlines()
+
+# Initialize variables
+data = []
+current_clm = None
+
+# Process each line
+for line in lines:
+    line = line.strip()
+    if line.startswith('CLM'):
+        # Parse CLM line into dynamic columns
+        clm_parts = line.split('*')
+        current_clm = {f'CLM{i+1}': clm_parts[i] for i in range(len(clm_parts))}
+    elif line.startswith('LX') and current_clm:
+        # Parse LX line
+        lx_parts = line.split('*')
+        lx_num = lx_parts[1]
+    elif line.startswith('SV2') and current_clm:
+        # Parse SV2 line into dynamic columns
+        sv2_parts = line.split('*')
+        sv2_data = {f'SV2{i}': sv2_parts[i] for i in range(1, len(sv2_parts))}
+    elif line.startswith('DTP') and current_clm:
+        # Parse DTP line into dynamic columns
+        dtp_parts = line.split('*')
+        dtp_data = {f'DTP{i}': dtp_parts[i] for i in range(1, len(dtp_parts))}
+    elif line.startswith('REF') and current_clm:
+        # Parse REF line
+        ref_parts = line.split('*')
+        ref01, ref02 = ref_parts[1], ref_parts[2]
+    elif line.startswith('SVD') and current_clm:
+        # Parse SVD line
+        svd_parts = line.split('*')
+        svd01, svd02 = svd_parts[1], svd_parts[2]
+    elif line.startswith('CAS') and current_clm:
+        # Parse CAS line
+        cas_parts = line.split('*')
+        cas01, cas02 = cas_parts[1], cas_parts[2]
+        # Combine all data into a single row
+        row = {**current_clm, 'LX': lx_num, **sv2_data, **dtp_data, 'REF01': ref01, 'REF02': ref02, 'SVD01': svd01, 'SVD02': svd02, 'CAS01': cas01, 'CAS02': cas02}
+        data.append(row)
+
+# Dynamically determine column names
+columns = set()
+for row in data:
+    columns.update(row.keys())
+columns = sorted(columns)
+
+# Create a DataFrame
+output_df = pd.DataFrame(data, columns=columns)
+
+# Save the output to a CSV file
+output_df.to_csv('output.csv', index=False)
+
+# Print the DataFrame
+print(output_df)
