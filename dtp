@@ -1,0 +1,44 @@
+import pandas as pd
+
+def process_input_data_from_file(file_path):
+    # Read input data from the file
+    with open(file_path, "r") as file:
+        input_data = file.read().strip()
+    
+    # Split the input data into lines
+    lines = input_data.split("\n")
+    parsed_data = []
+
+    # Process each line
+    for i in range(0, len(lines), 2):  # Process CLM and DTP lines together
+        if i + 1 < len(lines):  # Ensure there's a DTP line following the CLM line
+            clm_line = lines[i]
+            dtp_line = lines[i + 1]
+            
+            # Split lines into components
+            clm_parts = clm_line.split("*")
+            dtp_parts = dtp_line.split("*")
+            
+            # Create dynamic column names for CLM and DTP
+            clm_dict = {f"CLM{i+1}": clm_parts[i] for i in range(len(clm_parts))}
+            dtp_dict = {f"DTP{i+1}": dtp_parts[i] for i in range(len(dtp_parts))}
+            
+            # Combine CLM and DTP dictionaries
+            combined_row = {**clm_dict, **dtp_dict}
+            parsed_data.append(combined_row)
+
+    # Convert parsed data to DataFrame
+    df = pd.DataFrame(parsed_data)
+    return df
+
+# File path to input file
+file_path = "output3.txt"
+
+# Process the input data
+result_df = process_input_data_from_file(file_path)
+
+# Display the result
+print(result_df)
+
+# Save to CSV (optional)
+result_df.to_csv("output_data.csv", index=False)
