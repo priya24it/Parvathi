@@ -1,0 +1,19 @@
+
+
+999 fle: 
+
+EDI 999 Implementation Acknowledgment file
+AK1 Segment:  005010X231A1  
+AK2 Segment: 005010X222A1   
+IK5: A (Accepted status)  
+
+277 file:
+
+ Acknowledgment for Accepted Claims:
+Verify that accepted claims are listed with the correct claim ID (ICN or DCN).
+Confirm that STC segments indicate the correct status for accepted claims (e.g., “A1: Acknowledged”).
+
+Rejection Handling
+Ensure no claims are missing in the 277CA file
+Verify that the sequence of claims in the 277CA matches the order in the submitted 837 file.
+
