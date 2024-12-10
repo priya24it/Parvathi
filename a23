@@ -1,0 +1,19 @@
+flatted_list = [None]  # Example input
+
+# Check if the list contains only None values
+if all(item is None for item in flatted_list):
+    # Display the information message
+    message = "test_setup.yaml file: the respective tests have not been configured."
+    print(message)
+    
+    # Append the message to the table or log
+    table = []
+    table.append({"Message": message})  # Example of appending to a table
+else:
+    # Process the flatted_list if it contains valid elements
+    try:
+        for item in flatted_list:
+            if item is not None:
+                print(item)  # Example processing logic
+    except TypeError as e:
+        print(f"Error: {e}")
