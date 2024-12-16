@@ -1,0 +1,36 @@
+User Story: Count Testing and PII Updates for Received Files
+
+Title:
+Ensure all newly received files between partition dates 20241111 and 20241112 are updated with PII data and validated for count consistency.
+
+Description:
+As a data engineer, I want to validate that all 35 newly received files on 20241112 (compared to 20241111) are properly updated with PII data as specified in the tests.setup.yaml file, so that the data integrity and expected counts can be ensured during testing.
+
+Acceptance Criteria:
+	1.	Identify and list all 35 files newly received on partition date 20241112 when compared to 20241111.
+	2.	Validate that each file includes updates with the required PII data as defined in the tests.setup.yaml file.
+	3.	Perform count testing to ensure:
+	•	The number of records in each file matches the expected counts.
+	•	All expected records are present with no duplicates.
+	4.	Provide a report summarizing:
+	•	File names validated.
+	•	Any discrepancies in counts or missing PII updates.
+	5.	Any failures in PII updates or count mismatches must trigger appropriate logs or error notifications.
+
+Tasks:
+	1.	File Comparison:
+	•	Write a script to identify newly received files by comparing partition dates (20241111 vs. 20241112).
+	2.	PII Data Validation:
+	•	Use the tests.setup.yaml file to verify that PII data is present and correctly updated in each file.
+	3.	Count Testing:
+	•	Perform row counts for each file and compare with expected values.
+	•	Log mismatches or discrepancies.
+	4.	Reporting:
+	•	Generate a summary report of validation results, including successful files and any failures.
+	5.	Error Handling:
+	•	Implement logging and error notifications for files failing PII updates or count checks.
+
+Definition of Done:
+	•	All newly received files are successfully validated for PII updates and count consistency.
+	•	A comprehensive report is shared, highlighting results and any identified issues.
+	•	Failures are logged and escalated as needed.
