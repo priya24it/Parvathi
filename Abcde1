@@ -1,0 +1,21 @@
+import pandas as pd
+
+# Example DataFrame
+data = {
+    'rowID': [1, 2, 3, 4],
+    'created_date': ['2024-12-15', '2024-12-16', '2024-12-15', '2024-12-16'],
+    'A': [1, 2, 1, 2],
+    'B': ['X', 'Y', 'X', 'Y']
+}
+df = pd.DataFrame(data)
+
+# List of columns to ignore
+columns_to_ignore = ['rowID', 'created_date']
+
+# Find duplicates while ignoring specific columns
+duplicates = df.duplicated(subset=[col for col in df.columns if col not in columns_to_ignore])
+
+# Display duplicate rows
+duplicate_rows = df[duplicates]
+
+print(duplicate_rows)
