@@ -1,0 +1,41 @@
+User Story: Update Trigger File in Trigger Function and DAG Evaluation Parameters
+
+Title:
+Modify the trigger function and DAG evaluation parameters to use the updated trigger file.
+
+Description:
+As a data engineer, I want to update the trigger file in the trigger function and adjust the corresponding DAG evaluation parameters to reflect this change. This ensures that the workflows are executed with the correct trigger file, maintaining consistency and alignment between the trigger mechanism and the DAG.
+
+Acceptance Criteria:
+	1.	Update the trigger file path or name in the trigger function to point to the new file.
+	2.	Modify the DAG evaluation parameters (eval_params) to match the updated trigger file.
+	3.	Validate that the trigger function and DAG evaluation work seamlessly with the updated file.
+	4.	Perform end-to-end testing to confirm:
+	•	The new trigger file initiates the workflows correctly.
+	•	All downstream tasks execute as expected with the updated DAG parameters.
+	5.	Provide a report summarizing:
+	•	Changes made to the trigger function and DAG parameters.
+	•	Validation results confirming successful execution.
+
+Tasks:
+	1.	Update Trigger Function:
+	•	Locate the trigger function in the codebase.
+	•	Modify the function to reference the new trigger file.
+	•	Ensure the file path and format are consistent with the updated requirements.
+	2.	Modify DAG Evaluation Parameters:
+	•	Update the eval_params in the DAG configuration to align with the new trigger file.
+	•	Verify that all parameter dependencies are correctly linked.
+	3.	Validation and Testing:
+	•	Run the trigger function to confirm it successfully initiates workflows using the updated file.
+	•	Execute the DAG with the updated eval_params to verify:
+	•	Workflow execution is initiated by the new trigger file.
+	•	All dependent tasks run as expected.
+	4.	Reporting and Documentation:
+	•	Document the changes made to the trigger function and DAG evaluation parameters.
+	•	Provide a summary of validation and testing results, highlighting any issues and their resolutions.
+
+Definition of Done:
+	•	The trigger function is successfully updated to use the new trigger file.
+	•	DAG evaluation parameters are updated to reflect the changes in the trigger file.
+	•	End-to-end testing confirms that workflows are initiated and executed correctly with the updated configurations.
+	•	A detailed report is provided, summarizing the changes, validations, and results.
