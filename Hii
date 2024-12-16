@@ -1,0 +1,49 @@
+Enhanced User Story: PII Updates, Data Type Changes, and Backfill for Newly Received Files
+
+Title:
+Validate and update PII data for newly received files between partition dates 20241111 and 20241112, ensuring compatibility with DDM by changing data types and backfilling the data correctly.
+
+Description:
+As a data engineer, I want to identify all 35 newly received files on 20241112 (compared to 20241111), update the PII columns to ensure compatibility with DDM by converting their data types to strings, and reload the data to avoid any loss. This will ensure that all PII data is properly handled, and the files are backfilled correctly with no data gaps.
+
+Acceptance Criteria:
+	1.	Identify and list all 35 newly received files between partition dates 20241111 and 20241112.
+	2.	For each identified file:
+	•	Detect the PII columns.
+	•	Update the data type of all PII columns to string for DDM compatibility.
+	•	Reload the data from the received files to ensure no data is missed.
+	3.	Backfill any missing or incomplete data to maintain consistency.
+	4.	Perform count testing:
+	•	Ensure the total number of records matches the expected counts.
+	•	Validate that no duplicates or missing records exist after reloading and backfilling.
+	5.	Validate that all files are updated with the required PII data as per the tests.setup.yaml file.
+	6.	Provide a final report with the following:
+	•	List of validated files.
+	•	Details of PII updates (columns identified and data type changes made).
+	•	Count validation results.
+	•	Any discrepancies or errors encountered during the process.
+
+Tasks:
+	1.	File Identification:
+	•	Write a script to compare files between partition dates (20241111 and 20241112) and identify the 35 newly received files.
+	2.	PII Column Updates:
+	•	Parse the tests.setup.yaml file to identify PII columns for each file.
+	•	Convert the data type of these columns to string to meet DDM requirements.
+	3.	Data Reload and Backfill:
+	•	Reload the data from the received files to ensure no records are missed.
+	•	Backfill any missing or incomplete data to maintain dataset integrity.
+	4.	Count Testing:
+	•	Perform row count comparisons to validate that all records are loaded correctly.
+	•	Ensure that no duplicates exist, and all expected records are present.
+	5.	Reporting and Error Handling:
+	•	Generate a summary report of the validation process, including:
+	•	File names processed.
+	•	PII columns updated and their data types.
+	•	Count testing results.
+	•	Log any discrepancies or failures and trigger error notifications for remediation.
+
+Definition of Done:
+	•	All 35 newly received files are successfully processed, with PII columns updated to string data type for DDM compatibility.
+	•	All data is reloaded and backfilled correctly with no gaps or loss.
+	•	Count testing and PII validations are completed successfully, ensuring data consistency and accuracy.
+	•	A comprehensive report is shared, highlighting results, updates, and any issues identified during the process.
